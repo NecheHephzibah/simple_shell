@@ -1,6 +1,8 @@
 #include "main.h"
 
+void handle_argument(char **arr, char **cmdline_args);
 void execute_cmd(char **arr);
+
 
 /**
  * main - shell function.
@@ -10,81 +12,71 @@ void execute_cmd(char **arr);
 
 int main(void)
 {
-	char *prompt = "(Xshell)$ ";
-	ssize_t storePrompt;
-	char *linePtr = NULL, *linePtr_copy = NULL, *token;
-	size_t n = 0;
-	const char *delim = " \n";
-	int i, tokCount = 0;
-	char **arr;
+	char *linePtr = NULL, *linePtr_copy = NULL;
+	char **arr, **cmdline_args;
+	int tokCount = 0;
+
 	while (1)
 	{
-		printf("%s", prompt);
-		storePrompt = getline(&linePtr, &n, stdin);
-
-		if (storePrompt == -1)
-		{
-			printf("Exiting shell...\n");
-			return (-1);
-		}
-
-		linePtr_copy = malloc(sizeof(char) * storePrompt);
-		if (linePtr_copy == NULL)
-		{
-			perror("Error... memory allocation");
-			return (-1);
-		}
-
-		strcpy(linePtr_copy, linePtr);
-
-		token = strtok(linePtr, delim);
-		while (token != NULL)
-		{
-			tokCount++;
-			token = strtok(NULL, delim);
-		}
-		tokCount++;
-
-		arr = malloc(sizeof(char *) * tokCount);
-		token = strtok(linePtr_copy, delim);
-
-		for (i = 0; token != NULL; i++)
-		{
-			arr[i] = malloc(sizeof(char) * strlen(token) + 1);
-			arr[i] = strdup(token);
-			token = strtok(NULL, delim);
-		}
-		arr[i] = NULL;
-		execute_cmd(arr);
-		free(linePtr_copy);
+		linePtr = source_input();
+		arr = tok_input(linePtr, linePtr_copy, " \n", &tokCount);
+		cmdline_args = get_cmdline_args(tokCount);
+		handle_argument(arr, cmdline_args);
+		execute_cmd(cmdline_args);
+		free_memory(arr, cmdline_args, linePtr_copy);
 	}
 	free(linePtr);
+	return (0);
 }
 
-/**
- * execute_cmd - function that executes user input in command line.
- * @arr: gets the array of token.
+
+ /* handle_argument - function that copies command
+ * and its arguments separately.
+ * @arr: array that hold lists of arguments.
+ * @cmdline_args: command line arguments that would be
+ * passed by users.
  * Return: void.
  */
 
-void execute_cmd(char **arr)
+void handle_argument(char **arr, char **cmdline_args)
 {
-	char *command = NULL;
+	int arg_idx = 0;
+	int i;
+
+	cmdline_args[arg_idx++] = strdup(arr[0]);
+
+	for (i = 1; arr[i] != NULL; i++)
+	{
+		cmdline_args[arg_idx++] = strdup(arr[i]);
+	}
+	cmdline_args[arg_idx] = NULL;
+}
+
+
+/**
+ * execute_cmd - function that executes user input in command line.
+ * @cmdline_args: gets the array of comand line arguments.
+ * Return: void.
+ */
+
+void execute_cmd(char **cmdline_args)
+{
 	pid_t pid = fork();
 
-	if (arr)
+	if (pid == 0)
 	{
-		command = arr[0];
-
-		if (pid == 0)
+		if (execve(cmdline_args[0], cmdline_args, NULL) == -1)
 		{
-			if (execve(command, arr, NULL))
-				perror("Error: execve");
+			perror("Error: execve");
+			exit(EXIT_FAILURE);
 		}
-		else if (pid < 0)
-			perror("Error: fork");
-		else
-			wait(NULL);
 	}
+	else if (pid < 0)
+	{
+		perror("Error: fork");
+		exit(EXIT_FAILURE);
+	}
+	else
+		wait(NULL);
 }
 
