@@ -84,7 +84,6 @@ void execute_cmd(char **cmdline_args)
 				sprintf(full_addr, "%s%s", token_addr, cmd);
 			else
 				sprintf(full_addr, "%s/%s", token_addr, cmd);
-			printf("Trying to execute: %s\n", full_addr);
 			if (access(full_addr, X_OK) == 0)
 			{
 				pid = fork();
