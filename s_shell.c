@@ -30,7 +30,8 @@ int main(void)
 }
 
 
- /* handle_argument - function that copies command
+/**
+ * handle_argument - function that copies command
  * and its arguments separately.
  * @arr: array that hold lists of arguments.
  * @cmdline_args: command line arguments that would be
@@ -61,22 +62,50 @@ void handle_argument(char **arr, char **cmdline_args)
 
 void execute_cmd(char **cmdline_args)
 {
-	pid_t pid = fork();
+	char *cmd = NULL, *address = getenv("PATH");
+	char *addr_copy, *full_addr, *token_addr;
+	pid_t pid;
 
-	if (pid == 0)
+	if (cmdline_args && address)
 	{
-		if (execve(cmdline_args[0], cmdline_args, NULL) == -1)
+		cmd = cmdline_args[0];
+		addr_copy = strdup(address);
+		token_addr = strtok(addr_copy, ":");
+		while (token_addr != NULL)
 		{
-			perror("Error: execve");
-			exit(EXIT_FAILURE);
+			full_addr = malloc(strlen(token_addr) + strlen(cmd) + 2);
+			if (!full_addr)
+			{
+				perror("Memory allocation failed");
+				free(addr_copy);
+				return;
+			}
+			if (token_addr[strlen(token_addr) - 1] == '/')
+				sprintf(full_addr, "%s%s", token_addr, cmd);
+			else
+				sprintf(full_addr, "%s/%s", token_addr, cmd);
+			printf("Trying to execute: %s\n", full_addr);
+			if (access(full_addr, X_OK) == 0)
+			{
+				pid = fork();
+				if (pid == 0)
+				{
+					if (execve(full_addr, cmdline_args, NULL))
+						perror("Execution failed, execve");
+				}
+				else if (pid < 0)
+					perror("Execution failed: fork");
+				else
+					wait(NULL);
+				free(full_addr);
+				free(addr_copy);
+				return;
+			}
+			free(full_addr);
+			token_addr = strtok(NULL, ":");
 		}
+		free(addr_copy);
+		printf("%s : Couldn't find command\n", cmd);
 	}
-	else if (pid < 0)
-	{
-		perror("Error: fork");
-		exit(EXIT_FAILURE);
-	}
-	else
-		wait(NULL);
 }
 
