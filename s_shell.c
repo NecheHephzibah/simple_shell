@@ -22,6 +22,13 @@ int main(void)
 		arr = tok_input(linePtr, linePtr_copy, " \n", &tokCount);
 		cmdline_args = get_cmdline_args(tokCount);
 		handle_argument(arr, cmdline_args);
+
+		if (strcmp(cmdline_args[0], "exit") == 0)
+		{
+			free_memory(arr, cmdline_args, linePtr_copy);
+			exit(0);
+		}
+
 		execute_cmd(cmdline_args);
 		free_memory(arr, cmdline_args, linePtr_copy);
 	}
