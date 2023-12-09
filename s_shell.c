@@ -3,6 +3,7 @@
 void handle_argument(char **arr, char **cmdline_args);
 void execute_cmd(char **arr);
 
+extern char **environ;
 
 /**
  * main - shell function.
@@ -15,6 +16,7 @@ int main(void)
 	char *linePtr = NULL, *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
 	int tokCount = 0;
+	char **env;
 
 	while (1)
 	{
@@ -27,6 +29,13 @@ int main(void)
 		{
 			free_memory(arr, cmdline_args, linePtr_copy);
 			exit(0);
+		}
+		if (strcmp(cmdline_args[0], "env") == 0)
+		{
+			for (env = environ; *env != NULL; env++)
+				printf("%s\n", *env);
+			free_memory(arr, cmdline_args, linePtr_copy);
+			continue;
 		}
 
 		execute_cmd(cmdline_args);
