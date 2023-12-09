@@ -14,7 +14,7 @@ int main(void);
 
 void handle_argument(char **arr, char **cmdline_args);
 
-void execute_cmd(char **arr);
+void execute_cmd(char **cmdline_args, char **environ);
 
 void free_memory(char **arr, char **cmdline_args, char *linePtr_copy);
 

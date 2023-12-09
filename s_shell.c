@@ -1,7 +1,7 @@
 #include "main.h"
 
 void handle_argument(char **arr, char **cmdline_args);
-void execute_cmd(char **arr);
+void execute_cmd(char **cmdline_args, char **environ);
 
 extern char **environ;
 
@@ -25,20 +25,20 @@ int main(void)
 		cmdline_args = get_cmdline_args(tokCount);
 		handle_argument(arr, cmdline_args);
 
-		if (strcmp(cmdline_args[0], "exit") == 0)
+		if (_strcmp(cmdline_args[0], "exit") == 0)
 		{
 			free_memory(arr, cmdline_args, linePtr_copy);
 			exit(0);
 		}
-		if (strcmp(cmdline_args[0], "env") == 0)
+		if (_strcmp(cmdline_args[0], "env") == 0)
 		{
 			for (env = environ; *env != NULL; env++)
-				printf("%s\n", *env);
+				_printf("%s\n", *env);
 			free_memory(arr, cmdline_args, linePtr_copy);
 			continue;
 		}
 
-		execute_cmd(cmdline_args);
+		execute_cmd(cmdline_args, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
 	}
 	free(linePtr);
@@ -60,11 +60,11 @@ void handle_argument(char **arr, char **cmdline_args)
 	int arg_idx = 0;
 	int i;
 
-	cmdline_args[arg_idx++] = strdup(arr[0]);
+	cmdline_args[arg_idx++] = _strdup(arr[0]);
 
 	for (i = 1; arr[i] != NULL; i++)
 	{
-		cmdline_args[arg_idx++] = strdup(arr[i]);
+		cmdline_args[arg_idx++] = _strdup(arr[i]);
 	}
 	cmdline_args[arg_idx] = NULL;
 }
@@ -76,7 +76,7 @@ void handle_argument(char **arr, char **cmdline_args)
  * Return: void.
  */
 
-void execute_cmd(char **cmdline_args)
+void execute_cmd(char **cmdline_args, char **environ)
 {
 	char *cmd = NULL, *address = getenv("PATH");
 	char *addr_copy, *full_addr, *token_addr;
@@ -85,11 +85,11 @@ void execute_cmd(char **cmdline_args)
 	if (cmdline_args && address)
 	{
 		cmd = cmdline_args[0];
-		addr_copy = strdup(address);
+		addr_copy = _strdup(address);
 		token_addr = strtok(addr_copy, ":");
 		while (token_addr != NULL)
 		{
-			full_addr = malloc(strlen(token_addr) + strlen(cmd) + 2);
+			full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
 			if (!full_addr)
 			{
 				perror("Memory allocation failed");
@@ -105,7 +105,7 @@ void execute_cmd(char **cmdline_args)
 				pid = fork();
 				if (pid == 0)
 				{
-					if (execve(full_addr, cmdline_args, NULL))
+					if (execve(full_addr, cmdline_args, environ))
 						perror("Execution failed, execve");
 				}
 				else if (pid < 0)
