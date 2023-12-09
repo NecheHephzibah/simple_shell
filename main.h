@@ -10,11 +10,23 @@
 #include <sys/wait.h>
 
 
-int main(void);
+int main(int argc, char *argv[]);
+
+int _printf(const char *format, ...);
+
+int _strcmp(char *s1, char *s2);
+
+char *_strdup(char *str);
+
+char *_strconcat(char *s1, char *s2);
+
+int _strlen(char *s);
+
+char *_strcpy(char *dest, char *src);
 
 void handle_argument(char **arr, char **cmdline_args);
 
-void execute_cmd(char **cmdline_args, char **environ);
+void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
 void free_memory(char **arr, char **cmdline_args, char *linePtr_copy);
 

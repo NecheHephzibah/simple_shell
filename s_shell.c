@@ -1,23 +1,25 @@
 #include "main.h"
 
 void handle_argument(char **arr, char **cmdline_args);
-void execute_cmd(char **cmdline_args, char **environ);
+void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
 extern char **environ;
 
 /**
  * main - shell function.
- *
+ * @argc: argument count. 
+ * @argv: list of argument.
  * Return: (0) success.
  */
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *linePtr = NULL, *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
 	int tokCount = 0;
 	char **env;
 
+	(void)argc;
 	while (1)
 	{
 		linePtr = source_input();
@@ -38,7 +40,7 @@ int main(void)
 			continue;
 		}
 
-		execute_cmd(cmdline_args, environ);
+		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
 	}
 	free(linePtr);
@@ -76,7 +78,7 @@ void handle_argument(char **arr, char **cmdline_args)
  * Return: void.
  */
 
-void execute_cmd(char **cmdline_args, char **environ)
+void execute_cmd(char **cmdline_args, char **argv, char **environ)
 {
 	char *cmd = NULL, *address = getenv("PATH");
 	char *addr_copy, *full_addr, *token_addr;
@@ -89,7 +91,7 @@ void execute_cmd(char **cmdline_args, char **environ)
 		token_addr = strtok(addr_copy, ":");
 		while (token_addr != NULL)
 		{
-			full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
+			/*full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
 			if (!full_addr)
 			{
 				perror("Memory allocation failed");
@@ -99,7 +101,12 @@ void execute_cmd(char **cmdline_args, char **environ)
 			if (token_addr[strlen(token_addr) - 1] == '/')
 				sprintf(full_addr, "%s%s", token_addr, cmd);
 			else
-				sprintf(full_addr, "%s/%s", token_addr, cmd);
+				sprintf(full_addr, "%s/%s", token_addr, cmd);*/
+			if (access(cmd, X_OK) == 0)
+				full_addr = _strdup(cmd);
+			else
+				full_addr = _strconcat(token_addr, cmd);
+
 			if (access(full_addr, X_OK) == 0)
 			{
 				pid = fork();
@@ -120,7 +127,7 @@ void execute_cmd(char **cmdline_args, char **environ)
 			token_addr = strtok(NULL, ":");
 		}
 		free(addr_copy);
-		printf("%s : Couldn't find command\n", cmd);
+		printf("%s: 1: %s: not found\n", argv[0], cmd);
 	}
 }
 

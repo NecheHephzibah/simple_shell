@@ -17,7 +17,7 @@ char *source_input(void)
 
 	if (storePrompt == -1)
 	{
-		printf("Exiting shell...\n");
+	
  		exit(EXIT_FAILURE);
 	}
 
