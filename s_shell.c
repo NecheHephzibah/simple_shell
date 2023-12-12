@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 	char **arr, **cmdline_args;
 	int tokCount = 0;
 	char **env;
+	unsigned long int exit_status = 0;
 
 	(void)argc;
 	while (1)
@@ -29,8 +30,13 @@ int main(int argc, char *argv[])
 
 		if (_strcmp(cmdline_args[0], "exit") == 0)
 		{
+			if (cmdline_args[1])
+				exit_status = str_to_num(cmdline_args[1]);
 			free_memory(arr, cmdline_args, linePtr_copy);
-			exit(0);
+			if (exit_status != 0)
+				exit(exit_status);
+			else
+				exit(0);
 		}
 		if (_strcmp(cmdline_args[0], "env") == 0)
 		{
@@ -38,7 +44,7 @@ int main(int argc, char *argv[])
 				_printf("%s\n", *env);
 			free_memory(arr, cmdline_args, linePtr_copy);
 			continue;
-		}
+		}			
 
 		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
@@ -80,7 +86,7 @@ void handle_argument(char **arr, char **cmdline_args)
 
 void execute_cmd(char **cmdline_args, char **argv, char **environ)
 {
-	char *cmd = NULL, *address = getenv("PATH");
+	char *cmd = NULL, *address = _getenv("PATH");
 	char *addr_copy, *full_addr, *token_addr;
 	pid_t pid;
 

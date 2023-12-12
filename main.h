@@ -14,7 +14,15 @@ int main(int argc, char *argv[]);
 
 int _printf(const char *format, ...);
 
+unsigned long int str_to_num(char *s);
+
 int _strcmp(char *s1, char *s2);
+
+int _strncmp(char *s1, const char *s2, int len);
+
+char *str_chr(char *s, char c);
+
+char *_getenv(const char *name);
 
 char *_strdup(char *str);
 
