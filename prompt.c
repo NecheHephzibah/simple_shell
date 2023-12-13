@@ -12,12 +12,12 @@ char *source_input(void)
 	char *linePtr = NULL;
 	size_t n = 0;
 
-	printf("%s", prompt);
+	if (isatty(0))
+		printf("%s", prompt);
 	storePrompt = getline(&linePtr, &n, stdin);
 
-	if (storePrompt == -1)
+	if (storePrompt == -1 && isatty(0))
 	{
-	
  		exit(EXIT_FAILURE);
 	}
 
