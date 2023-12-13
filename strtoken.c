@@ -16,14 +16,14 @@ char **tok_input(char *linePtr, char *linePtr_copy,
 	int i;
 	char **arr;
 
-	linePtr_copy = malloc(sizeof(char) * strlen(linePtr));
+	linePtr_copy = malloc(sizeof(char) * _strlen(linePtr));
 	if (linePtr_copy == NULL)
 	{
 		perror("Error... memory allocation");
 		exit(EXIT_FAILURE);
 	}
 
-	strcpy(linePtr_copy, linePtr);
+	_strcpy(linePtr_copy, linePtr);
 
 	token = strtok(linePtr, delim);
 	while (token != NULL)
@@ -38,7 +38,7 @@ char **tok_input(char *linePtr, char *linePtr_copy,
 
 	for (i = 0; token != NULL; i++)
 	{
-		arr[i] = strdup(token);
+		arr[i] = _strdup(token);
 		token = strtok(NULL, delim);
 	}
 	arr[i] = NULL;
