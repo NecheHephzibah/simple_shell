@@ -13,7 +13,7 @@ char *source_input(void)
 	size_t n = 0;
 
 	if (isatty(0))
-		printf("%s", prompt);
+		_printf("%s", prompt);
 	storePrompt = getline(&linePtr, &n, stdin);
 
 	if (storePrompt == -1 && isatty(0))
