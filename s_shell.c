@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
 
 		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
+		
+		if (!(isatty(0)))
+			exit(0);
 	}
 	free(linePtr);
 	return (0);
