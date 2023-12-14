@@ -6,6 +6,7 @@
  * @linePtr: pointer to the input string.
  * @linePtr_copy: copy of the input string.
  * @delim: delimiter for strtok.
+ * @tokCount: number of tokens.
  *
  * Return: arr.
  */

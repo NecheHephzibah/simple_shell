@@ -1,7 +1,5 @@
 #include "main.h"
 
-extern char **environ;
-
 /**
   * _getenv - function that gets the environment variable of a PATH.
   * @name: the name of the path.

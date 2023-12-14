@@ -16,7 +16,7 @@ void free_memory(char **arr, char **cmdline_args, char *linePtr_copy)
 	for (w = 0; arr[w] != NULL; w++)
 		free(arr[w]);
 	free(arr);
-	for(m = 0; cmdline_args[m] != NULL; m++)
+	for (m = 0; cmdline_args[m] != NULL; m++)
 		free(cmdline_args[m]);
 	free(cmdline_args);
 	free(linePtr_copy);

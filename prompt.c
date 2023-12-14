@@ -18,7 +18,7 @@ char *source_input(void)
 
 	if (storePrompt == -1 && isatty(0))
 	{
- 		exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 
 	return (linePtr);

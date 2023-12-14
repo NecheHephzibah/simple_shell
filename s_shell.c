@@ -3,11 +3,9 @@
 void handle_argument(char **arr, char **cmdline_args);
 void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
-extern char **environ;
-
 /**
  * main - shell function.
- * @argc: argument count. 
+ * @argc: argument count.
  * @argv: list of argument.
  * Return: (0) success.
  */
@@ -51,11 +49,11 @@ int main(int argc, char *argv[])
 				_printf("%s\n", *env);
 			free_memory(arr, cmdline_args, linePtr_copy);
 			continue;
-		}			
+		}
 
 		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
-		
+
 		if (!(isatty(0)))
 			exit(0);
 	}
@@ -91,6 +89,8 @@ void handle_argument(char **arr, char **cmdline_args)
 /**
  * execute_cmd - function that executes user input in command line.
  * @cmdline_args: gets the array of comand line arguments.
+ * @argv: initial command line arguments.
+ * @environ: environment variable
  * Return: void.
  */
 
@@ -107,17 +107,19 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 		token_addr = strtok(addr_copy, ":");
 		while (token_addr != NULL)
 		{
-			/*full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
-			if (!full_addr)
-			{
-				perror("Memory allocation failed");
-				free(addr_copy);
-				return;
-			}
-			if (token_addr[strlen(token_addr) - 1] == '/')
-				sprintf(full_addr, "%s%s", token_addr, cmd);
-			else
-				sprintf(full_addr, "%s/%s", token_addr, cmd);*/
+			/**
+			 * full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
+			 *if (!full_addr)
+			 *{
+			 *	perror("Memory allocation failed");
+			 *	free(addr_copy);
+			 *	return;
+			 *}
+			 *if (token_addr[strlen(token_addr) - 1] == '/')
+			 *	sprintf(full_addr, "%s%s", token_addr, cmd);
+			 *else
+			 *	sprintf(full_addr, "%s/%s", token_addr, cmd);
+			 */
 			if (access(cmd, X_OK) == 0)
 				full_addr = _strdup(cmd);
 			else
