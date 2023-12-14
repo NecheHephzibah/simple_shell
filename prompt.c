@@ -18,6 +18,7 @@ char *source_input(void)
 
 	if (storePrompt == -1 && isatty(0))
 	{
+		printf("\n");
 		exit(EXIT_FAILURE);
 	}
 
