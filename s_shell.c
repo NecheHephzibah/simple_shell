@@ -25,6 +25,13 @@ int main(int argc, char *argv[])
 	{
 		linePtr = source_input();
 		arr = tok_input(linePtr, linePtr_copy, " \n", &tokCount);
+		if (arr[0] == NULL)
+		{
+			free(linePtr);
+			free(linePtr_copy);
+			free(arr);
+			continue;
+		}
 		cmdline_args = get_cmdline_args(tokCount);
 		handle_argument(arr, cmdline_args);
 
