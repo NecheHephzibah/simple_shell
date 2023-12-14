@@ -7,7 +7,7 @@
  */
 char *source_input(void)
 {
-	char *prompt = "(Xshell)$ ";
+	char *prompt = " $ ";
 	ssize_t storePrompt;
 	char *linePtr = NULL;
 	size_t n = 0;
