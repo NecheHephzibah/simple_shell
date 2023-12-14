@@ -12,6 +12,8 @@
 
 int main(int argc, char *argv[]);
 
+extern char **environ;
+
 int _printf(const char *format, ...);
 
 unsigned long int str_to_num(char *s);
