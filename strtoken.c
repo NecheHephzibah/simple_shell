@@ -6,7 +6,6 @@
  * @linePtr: pointer to the input string.
  * @linePtr_copy: copy of the input string.
  * @delim: delimiter for strtok.
- * @tokCount: number of tokens.
  *
  * Return: arr.
  */
@@ -17,14 +16,14 @@ char **tok_input(char *linePtr, char *linePtr_copy,
 	int i;
 	char **arr;
 
-	linePtr_copy = malloc(sizeof(char) * _strlen(linePtr));
+	linePtr_copy = malloc(sizeof(char) * strlen(linePtr));
 	if (linePtr_copy == NULL)
 	{
 		perror("Error... memory allocation");
 		exit(EXIT_FAILURE);
 	}
 
-	_strcpy(linePtr_copy, linePtr);
+	strcpy(linePtr_copy, linePtr);
 
 	token = strtok(linePtr, delim);
 	while (token != NULL)
@@ -39,7 +38,7 @@ char **tok_input(char *linePtr, char *linePtr_copy,
 
 	for (i = 0; token != NULL; i++)
 	{
-		arr[i] = _strdup(token);
+		arr[i] = strdup(token);
 		token = strtok(NULL, delim);
 	}
 	arr[i] = NULL;

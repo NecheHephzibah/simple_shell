@@ -45,7 +45,7 @@ char **get_cmdline_args(int tokCount);
 char *source_input(void);
 
 char **tok_input(char *linePtr, char *linePtr_copy,
-	const char *delim, int *tokCount);
+		const char *delim, int *tokCount);
 
 
 #endif
