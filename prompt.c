@@ -18,6 +18,8 @@ char *source_input(void)
 
 	if (storePrompt == -1 && isatty(0))
 	{
+		free(linePtr);
+
 		printf("\n");
 		exit(EXIT_FAILURE);
 	}

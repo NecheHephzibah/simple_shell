@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
 			if (cmdline_args[1])
 				exit_status = str_to_num(cmdline_args[1]);
 			free_memory(arr, cmdline_args, linePtr_copy);
+			free(linePtr);
 			if (exit_status != 0)
 				exit(exit_status);
 			else
@@ -48,11 +49,13 @@ int main(int argc, char *argv[])
 			for (env = environ; *env != NULL; env++)
 				_printf("%s\n", *env);
 			free_memory(arr, cmdline_args, linePtr_copy);
+			free(linePtr);
 			continue;
 		}
 
 		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
+		free(linePtr);
 
 		if (!(isatty(0)))
 			exit(0);
