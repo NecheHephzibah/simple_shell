@@ -16,7 +16,7 @@ char **source_input(void)
 	if (isatty(0))
 		_printf("%s", prompt);
 
-	linePtr = malloc(sizeof(char *) * 3);
+	linePtr = malloc(sizeof(char *) * 4);
 	while (storePrompt > 0)
 	{
 		storePrompt = getline(&linePtr[i], &n, stdin);
@@ -33,10 +33,11 @@ char **source_input(void)
 		i++;
 
 	}
-
+	linePtr[i] = NULL;
 	printf("LinePtr[0] = %s\n", linePtr[0]);
 	printf("LinePtr[1] = %s\n", linePtr[1]);
 	printf("LinePtr[2] = %s\n", linePtr[2]);
+
 
 	return (linePtr);
 }
