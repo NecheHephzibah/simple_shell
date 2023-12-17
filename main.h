@@ -42,7 +42,7 @@ void free_memory(char **arr, char **cmdline_args, char *linePtr_copy);
 
 char **get_cmdline_args(int tokCount);
 
-char *source_input(void);
+char **source_input(void);
 
 char **tok_input(char *linePtr, char *linePtr_copy,
 		const char *delim, int *tokCount);

@@ -1,5 +1,6 @@
 #include "main.h"
 
+/*char ***split_cmd(char **arr);*/
 void handle_argument(char **arr, char **cmdline_args);
 void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
@@ -12,9 +13,9 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
 int main(int argc, char *argv[])
 {
-	char *linePtr = NULL, *linePtr_copy = NULL;
+	char **linePtr = NULL, *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
-	int tokCount = 0;
+	int tokCount = 0, i = 0;
 	char **env;
 	unsigned long int exit_status = 0;
 
@@ -22,14 +23,17 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		linePtr = source_input();
-		arr = tok_input(linePtr, linePtr_copy, " \n", &tokCount);
-		if (arr[0] == NULL)
+		while (linePtr[i])
+		{
+		arr = tok_input(linePtr[i], linePtr_copy, " \n\t", &tokCount);
+	
+		/*if (arr[0] == NULL)
 		{
 			free(linePtr);
 			free(linePtr_copy);
 			free(arr);
 			continue;
-		}
+		}*/
 		cmdline_args = get_cmdline_args(tokCount);
 		handle_argument(arr, cmdline_args);
 
@@ -55,7 +59,10 @@ int main(int argc, char *argv[])
 
 		execute_cmd(cmdline_args, argv, environ);
 		free_memory(arr, cmdline_args, linePtr_copy);
-		free(linePtr);
+		free(linePtr[i]);
+		i++;
+		}
+		exit(97);
 
 		if (!(isatty(0)))
 			exit(0);
@@ -63,6 +70,42 @@ int main(int argc, char *argv[])
 	free(linePtr);
 	return (0);
 }
+
+
+/**
+ * split_cmd - function to split array commands
+ * @arr: the array to split
+ * Return: splitted array.
+ */
+
+/*char ***split_cmd(char **arr)
+{
+	char ***arr_arr;
+	int i = 0, j;
+
+
+	while (arr[i + 1] && (strcmp(arr[i], arr[i + 1]) == 0))
+	{
+		i++;
+	}
+	i++;
+
+	arr_arr = malloc(sizeof(char **) * (i + 1));
+	for (j = 0; j < i; j++)
+	{
+		arr_arr[j] = malloc(2 * (sizeof(char *)));
+		if (arr_arr[j] == NULL)
+		{
+			perror("Error...memory allocation arr_arr[j]");
+			exit(EXIT_FAILURE);
+		}
+		arr_arr[j][0] = arr[j];
+		arr_arr[j][1] = NULL;
+	}
+
+	arr_arr[j] = NULL;
+	return (arr_arr);
+}*/
 
 
 /**
@@ -110,19 +153,6 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 		token_addr = strtok(addr_copy, ":");
 		while (token_addr != NULL)
 		{
-			/**
-			 * full_addr = malloc(_strlen(token_addr) + _strlen(cmd) + 2);
-			 *if (!full_addr)
-			 *{
-			 *	perror("Memory allocation failed");
-			 *	free(addr_copy);
-			 *	return;
-			 *}
-			 *if (token_addr[strlen(token_addr) - 1] == '/')
-			 *	sprintf(full_addr, "%s%s", token_addr, cmd);
-			 *else
-			 *	sprintf(full_addr, "%s/%s", token_addr, cmd);
-			 */
 			if (access(cmd, X_OK) == 0)
 				full_addr = _strdup(cmd);
 			else
