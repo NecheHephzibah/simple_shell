@@ -14,31 +14,27 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ);
 int main(int argc, char *argv[])
 {
 	char **linePtr = NULL; 
-	char *linePtr_copy = NULL, **linePtrtemp;
+	char *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
-	int tokCount = 0, i = 0;
+	int tokCount = 0, i = 0, len_linePtr = 0;
 	char **env;
 	unsigned long int exit_status = 0;
 
 	(void)argc;
 	while (1)
 	{
-		linePtr = source_input();
-		linePtrtemp = linePtr;
-		printf("%p\n", (char *)linePtr);
-		printf("%p\n", (char *)++linePtrtemp);
-		exit(90);
-		while (i < 3)
+		linePtr = source_input(&len_linePtr);
+		while (i < len_linePtr)
 		{
 		arr = tok_input(linePtr[i], linePtr_copy, " \n\t", &tokCount);
 	
-		/*if (arr[0] == NULL)
+		if (arr[0] == NULL)
 		{
-			free(linePtr);
+			free(linePtr[i]);
 			free(linePtr_copy);
 			free(arr);
-			continue;
-		}*/
+			break;
+		}
 		cmdline_args = get_cmdline_args(tokCount);
 		handle_argument(arr, cmdline_args);
 
@@ -47,6 +43,7 @@ int main(int argc, char *argv[])
 			if (cmdline_args[1])
 				exit_status = str_to_num(cmdline_args[1]);
 			free_memory(arr, cmdline_args, linePtr_copy);
+			free(linePtr[i]);
 			free(linePtr);
 			if (exit_status != 0)
 				exit(exit_status);
@@ -58,8 +55,8 @@ int main(int argc, char *argv[])
 			for (env = environ; *env != NULL; env++)
 				_printf("%s\n", *env);
 			free_memory(arr, cmdline_args, linePtr_copy);
-			free(linePtr);
-			continue;
+			free(linePtr[i]);
+			break;
 		}
 
 		execute_cmd(cmdline_args, argv, environ);
@@ -72,7 +69,7 @@ int main(int argc, char *argv[])
 
 		i++;
 		}
-		exit(97);
+		free(linePtr);
 
 		if (!(isatty(0)))
 			exit(0);
