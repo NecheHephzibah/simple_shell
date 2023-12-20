@@ -47,5 +47,16 @@ char **source_input(int *len);
 char **tok_input(char *linePtr, char *linePtr_copy,
 		const char *delim, int *tokCount);
 
+/**
+ * list_m - linked list of command line args
+ * @line: a line of command
+ * @next: the next node command line
+ */
+typedef struct list_l
+{
+	char *line;
+	int index;
+	struct list_l *next;
+} list_m;
 
 #endif
