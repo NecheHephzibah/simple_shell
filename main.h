@@ -48,7 +48,7 @@ char **tok_input(char *linePtr, char *linePtr_copy,
 		const char *delim, int *tokCount);
 
 /**
- * list_m - linked list of command line args
+ * struct list_l - linked list of command line args
  * @line: a line of command
  * @next: the next node command line
  */
