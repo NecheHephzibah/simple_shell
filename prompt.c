@@ -12,8 +12,8 @@ char **source_input(int *len)
 	char **linePtr = NULL;
 	size_t n = 0;
 	int i = 0;
-	list_m **head;
-	*head = NULL;
+	list_m *head;
+	head = NULL;
 
 	if (isatty(0))
 		_printf("%s", prompt);
@@ -32,7 +32,7 @@ char **source_input(int *len)
 		}
 		printf("%s\n", line);
 		if (!(storePrompt == -1))
-			add_node(head, line, i);
+			add_node(&head, line, i);
 		i++;
 	}
 	printf("%d\n", i);
