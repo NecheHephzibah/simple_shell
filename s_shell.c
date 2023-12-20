@@ -13,7 +13,7 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ);
 
 int main(int argc, char *argv[])
 {
-	char **linePtr = NULL; 
+	char **linePtr = NULL;
 	char *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
 	int tokCount = 0, i = 0, len_linePtr = 0;
@@ -24,10 +24,11 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		linePtr = source_input(&len_linePtr);
+		i = 0;
 		while (i < len_linePtr)
 		{
 		arr = tok_input(linePtr[i], linePtr_copy, " \n\t", &tokCount);
-	
+
 		if (arr[0] == NULL)
 		{
 			free(linePtr[i]);
@@ -58,15 +59,9 @@ int main(int argc, char *argv[])
 			free(linePtr[i]);
 			break;
 		}
-
 		execute_cmd(cmdline_args, argv, environ);
-		printf("Executed command %d\n", i + 1);
 		free_memory(arr, cmdline_args, linePtr_copy);
-		printf("Memory %d\n", i + 1);
-		printf("LinePtr = %s\n", linePtr[i]);
 		free(linePtr[i]);
-		printf("LinePtr = %s\n", linePtr[i]);
-
 		i++;
 		}
 		free(linePtr);
@@ -77,42 +72,6 @@ int main(int argc, char *argv[])
 	free(linePtr);
 	return (0);
 }
-
-
-/**
- * split_cmd - function to split array commands
- * @arr: the array to split
- * Return: splitted array.
- */
-
-/*char ***split_cmd(char **arr)
-{
-	char ***arr_arr;
-	int i = 0, j;
-
-
-	while (arr[i + 1] && (strcmp(arr[i], arr[i + 1]) == 0))
-	{
-		i++;
-	}
-	i++;
-
-	arr_arr = malloc(sizeof(char **) * (i + 1));
-	for (j = 0; j < i; j++)
-	{
-		arr_arr[j] = malloc(2 * (sizeof(char *)));
-		if (arr_arr[j] == NULL)
-		{
-			perror("Error...memory allocation arr_arr[j]");
-			exit(EXIT_FAILURE);
-		}
-		arr_arr[j][0] = arr[j];
-		arr_arr[j][1] = NULL;
-	}
-
-	arr_arr[j] = NULL;
-	return (arr_arr);
-}*/
 
 
 /**

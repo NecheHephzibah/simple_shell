@@ -47,6 +47,7 @@ char **source_input(int *len);
 char **tok_input(char *linePtr, char *linePtr_copy,
 		const char *delim, int *tokCount);
 
+
 /**
  * struct list_l - linked list of command line args
  * @line: a line of command
@@ -59,4 +60,5 @@ typedef struct list_l
 	struct list_l *next;
 } list_m;
 
+size_t print_list(const list_m *h);
 #endif

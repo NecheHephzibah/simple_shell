@@ -4,7 +4,7 @@ char *get_node(list_m *head, int index);
 void free_list(list_m *head);
 /**
  * source_input - function that gets the input from the user.
- *
+ * @len: the length of the input.
  * Return: linePtr.
  */
 char **source_input(int *len)
@@ -15,6 +15,7 @@ char **source_input(int *len)
 	size_t n = 0;
 	int i = 0;
 	list_m *head;
+
 	head = NULL;
 
 	if (isatty(0))
@@ -35,32 +36,28 @@ char **source_input(int *len)
 
 		if (!(storePrompt == -1))
 		{
-			printf("%s\n", line);
 			add_node(&head, line, i);
+			free(line);
 		}
 		i++;
+		if (isatty(0))
+		{
+			i++;
+			break;
+		}
 	}
-	printf("i is = %d\n", i);
 
 	*len = i - 1;
-	printf("len is = %d\n", *len);
 	linePtr = malloc(sizeof(char *) * i);
 	i = 0;
 
 	while (i < *len)
 	{
-		printf("What the node should get is = %s\n", get_node(head, i));
 		linePtr[i] = get_node(head, i);
-
 		i++;
 	}
 	linePtr[i] = NULL;
-	exit(98);
 	free_list(head);
-
-	printf("LinePtr[0] = %s\n", linePtr[0]);
-	printf("LinePtr[1] = %s\n", linePtr[1]);
-	printf("LinePtr[2] = %s\n", linePtr[2]);
 
 	return (linePtr);
 }
@@ -85,7 +82,7 @@ list_m *add_node(list_m **head, char *line, int index)
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-	new->line = line;
+	new->line = _strdup(line);
 	new->index = index;
 	if (temp == NULL)
 	{
