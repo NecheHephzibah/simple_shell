@@ -38,6 +38,7 @@ char **source_input(int *len)
 		{
 			add_node(&head, line, i);
 			free(line);
+			line = NULL;
 		}
 		i++;
 		if (isatty(0))
