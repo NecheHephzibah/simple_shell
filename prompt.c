@@ -24,6 +24,7 @@ char **source_input(int *len)
 
 	while (storePrompt > 0)
 	{
+		line = NULL;
 		storePrompt = getline(&line, &n, stdin);
 
 		if (storePrompt == -1 && isatty(0) && i == 0)
