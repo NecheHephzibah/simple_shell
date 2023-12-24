@@ -112,7 +112,7 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 	char *addr_copy, *full_addr, *token_addr;
 	pid_t pid;
 
-	if (cmdline_args && address)
+	if (cmdline_args && (1 || address))
 	{
 		cmd = cmdline_args[0];
 		addr_copy = _strdup(address);
