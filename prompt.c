@@ -24,7 +24,7 @@ char **source_input(int *len)
 
 	while (storePrompt > 0)
 	{
-
+		line = NULL;
 		storePrompt = getline(&line, &n, stdin);
 
 		if (storePrompt == -1 && isatty(0) && i == 0)
@@ -38,7 +38,6 @@ char **source_input(int *len)
 		{
 			add_node(&head, line, i);
 			free(line);
-			line = NULL;
 		}
 		i++;
 		if (isatty(0))
