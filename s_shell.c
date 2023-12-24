@@ -117,7 +117,7 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 		cmd = cmdline_args[0];
 		addr_copy = _strdup(address);
 		token_addr = strtok(addr_copy, ":");
-		while (token_addr != NULL)
+		while ((token_addr != NULL) || (access(cmd, X_OK) == 0))
 		{
 			if (access(cmd, X_OK) == 0)
 				full_addr = _strdup(cmd);
