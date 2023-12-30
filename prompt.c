@@ -35,6 +35,13 @@ char **source_input(int *len)
 			exit(EXIT_FAILURE);
 		}
 
+		if (storePrompt == -1)
+		{
+			i++;
+			free(line);
+			break;
+		}
+
 		line_copy = _strdup(line);
 		if (storePrompt != -1 && strtok(line_copy, " \n\t") == NULL && !(isatty(0)))
 		{
@@ -54,11 +61,6 @@ char **source_input(int *len)
 		{
 			i++;
 			break;
-		}
-		if (storePrompt == -1)
-		{
-			free(line_copy);
-			free(line);
 		}
 	}
 
