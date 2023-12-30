@@ -9,7 +9,7 @@ void free_list(list_m *head);
  */
 char **source_input(int *len)
 {
-	char *prompt = " $ ", *line = NULL;
+	char *prompt = " $ ", *line = NULL, *line_copy;
 	ssize_t storePrompt = 1;
 	char **linePtr = NULL;
 	size_t n = 0;
@@ -35,8 +35,10 @@ char **source_input(int *len)
 			exit(EXIT_FAILURE);
 		}
 
-		if (storePrompt != -1 && strtok(line, " \n\t") == NULL && !(isatty(0)))
+		line_copy = _strdup(line);
+		if (storePrompt != -1 && strtok(line_copy, " \n\t") == NULL && !(isatty(0)))
 		{
+			free(line_copy);
 			free(line);
 			continue;
 		}	
@@ -44,6 +46,7 @@ char **source_input(int *len)
 		if (!(storePrompt == -1))
 		{
 			add_node(&head, line, i);
+			free(line_copy);
 			free(line);
 		}
 		i++;
@@ -53,7 +56,10 @@ char **source_input(int *len)
 			break;
 		}
 		if (storePrompt == -1)
+		{
+			free(line_copy);
 			free(line);
+		}
 	}
 
 	*len = i - 1;
