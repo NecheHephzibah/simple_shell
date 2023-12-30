@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 		if (!(isatty(0)))
 			exit(0);
 	}
-	free(linePtr);
+
 	return (0);
 }
 
@@ -145,6 +145,7 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 		}
 		free(addr_copy);
 		printf("%s: 1: %s: not found\n", argv[0], cmd);
+		exit(EXIT_FAILURE);
 	}
 }
 

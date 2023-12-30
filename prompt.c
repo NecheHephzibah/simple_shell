@@ -9,7 +9,7 @@ void free_list(list_m *head);
  */
 char **source_input(int *len)
 {
-	char *prompt = " $ ", *line = NULL;
+	char *prompt = " $ ", *line = NULL; /*line_copy;*/
 	ssize_t storePrompt = 1;
 	char **linePtr = NULL;
 	size_t n = 0;
@@ -32,6 +32,12 @@ char **source_input(int *len)
 			free(line);
 			_printf("\n");
 			exit(EXIT_FAILURE);
+		}
+
+		/*line_copy = _strdup(line);*/
+		if (storePrompt != -1 && strtok(line, " \n\t") == NULL && !(isatty(0)))
+		{
+			continue;
 		}
 
 		if (!(storePrompt == -1))
