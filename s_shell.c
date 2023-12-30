@@ -109,18 +109,23 @@ void handle_argument(char **arr, char **cmdline_args)
 void execute_cmd(char **cmdline_args, char **argv, char **environ)
 {
 	char *cmd = NULL, *address = _getenv("PATH");
-	char *addr_copy, *full_addr, *token_addr;
+	char *addr_copy, *full_addr, *token_addr = NULL;
 	pid_t pid;
 
 	if (cmdline_args && (1 || address))
 	{
 		cmd = cmdline_args[0];
-		addr_copy = _strdup(address);
-		token_addr = strtok(addr_copy, ":");
+		if (address && address[0])
+		{
+			addr_copy = _strdup(address);
+			token_addr = strtok(addr_copy, ":");
+		}
 		while ((token_addr != NULL) || (access(cmd, X_OK) == 0))
 		{
 			if (access(cmd, X_OK) == 0)
 				full_addr = _strdup(cmd);
+			else if (!(address && address[0]))
+				break;
 			else
 				full_addr = _strconcat(token_addr, cmd);
 
@@ -137,15 +142,23 @@ void execute_cmd(char **cmdline_args, char **argv, char **environ)
 				else
 					wait(NULL);
 				free(full_addr);
-				free(addr_copy);
+				if (addr_copy)
+					free(addr_copy);
+				/*if (address)
+				 *	free(address);
+				 */
 				return;
 			}
 			free(full_addr);
 			token_addr = strtok(NULL, ":");
 		}
-		free(addr_copy);
-		printf("%s: 1: %s: not found\n", argv[0], cmd);
-		exit(EXIT_FAILURE);
+		if (addr_copy)
+			free(addr_copy);
+		/*if (address)
+		 *	free(address);
+		 */
+		_fprintf("%s: 1: %s: not found\n", argv[0], cmd);
+		exit(127);
 	}
 }
 

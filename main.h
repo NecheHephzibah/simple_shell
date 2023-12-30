@@ -16,6 +16,25 @@ extern char **environ;
 
 int _printf(const char *format, ...);
 
+int _power(int base, int exponent);
+unsigned long int str_to_num(char *s);
+int _print_num(long int, int);
+int _print_bin(unsigned int num, int count);
+int _print_unsigned_num(unsigned long int num);
+int _print_octal(unsigned long int num);
+int _print_hex(unsigned long int num, int flag);
+int is_flag(char c);
+int is_format(char c);
+int padding(int pad_width);
+int zero_padding(int pad_width);
+int len(char *str);
+int _print_num_count(long int);
+int _print_unsigned_num_count(unsigned long int num);
+int _print_octal_count(unsigned long int num);
+int _print_hex_count(unsigned long int num, int flag);
+
+int _fprintf(const char *format, ...);
+
 unsigned long int str_to_num(char *s);
 
 int _strcmp(char *s1, char *s2);
