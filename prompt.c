@@ -34,11 +34,12 @@ char **source_input(int *len)
 			exit(EXIT_FAILURE);
 		}
 
-		/*line_copy = _strdup(line);*/
-		if (storePrompt != -1 && strtok(line, " \n\t") == NULL && !(isatty(0)))
-		{
-			continue;
-		}
+		/*line_copy = _strdup(line);
+		 *if (storePrompt != -1 && strtok(line, " \n\t") == NULL && !(isatty(0)))
+		 *{
+		 *	continue;
+		 *}
+		 */
 
 		if (!(storePrompt == -1))
 		{

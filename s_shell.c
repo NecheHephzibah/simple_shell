@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 		if (!(isatty(0)))
 			exit(0);
 	}
-
+	free(linePtr);
 	return (0);
 }
 
