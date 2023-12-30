@@ -52,6 +52,8 @@ char **source_input(int *len)
 			i++;
 			break;
 		}
+		if (storePrompt == -1)
+			free(line);
 	}
 
 	*len = i - 1;
