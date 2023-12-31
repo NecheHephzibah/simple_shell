@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 			if (cmdline_args[1][j] < '0' ||
 					cmdline_args[1][j] > '9')
 			{
-			_fprintf("%s: 1: exit: illegal number: %s\n",
+			_fprintf("%s: 1: exit: Illegal number: %s\n",
 					argv[0], cmdline_args[1]);
 			exit_status = 2;
 			break;
