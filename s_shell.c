@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
 			free(linePtr);
 			if (exit_status != 0)
 				exit(exit_status);
+			else if (i > 0)
+				exit(2);
 			else
 				exit(0);
 		}
