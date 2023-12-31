@@ -16,9 +16,9 @@ int main(int argc, char *argv[])
 	char **linePtr = NULL;
 	char *linePtr_copy = NULL;
 	char **arr, **cmdline_args;
-	int tokCount = 0, i = 0, len_linePtr = 0;
+	int tokCount = 0, i = 0, j, len_linePtr = 0;
 	char **env;
-	unsigned long int exit_status = 0;
+	long int exit_status = 0;
 
 	(void)argc;
 	while (1)
@@ -42,7 +42,22 @@ int main(int argc, char *argv[])
 		if (_strcmp(cmdline_args[0], "exit") == 0)
 		{
 			if (cmdline_args[1])
-				exit_status = str_to_num(cmdline_args[1]);
+			{
+			exit_status = (long int)str_to_num(cmdline_args[1]);
+			j = 0;
+			while (cmdline_args[1][j])
+			{
+			if (cmdline_args[1][j] < '0' ||
+					cmdline_args[1][j] > '9')
+			{
+			_fprintf("%s: 1: exit: illegal number: %s\n",
+					argv[0], cmdline_args[1]);
+			exit_status = 2;
+			break;
+			}
+			j++;
+			}
+			}
 			free_memory(arr, cmdline_args, linePtr_copy);
 			free(linePtr[i]);
 			free(linePtr);
